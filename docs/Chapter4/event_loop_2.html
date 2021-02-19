@@ -1,0 +1,343 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>事件循环2 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="event_loop_1.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    前言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Chapter1/">
+            
+                <a href="../Chapter1/">
+            
+                    
+                    第一章 GitBook
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../Chapter2/">
+            
+                <a href="../Chapter2/">
+            
+                    
+                    第二章 mongoDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../Chapter3/">
+            
+                <a href="../Chapter3/">
+            
+                    
+                    第三章 vue2.x 源码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    第四章 javascript
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="event_loop_1.html">
+            
+                <a href="event_loop_1.html">
+            
+                    
+                    事件循环1
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.5.2" data-path="event_loop_2.html">
+            
+                <a href="event_loop_2.html">
+            
+                    
+                    事件循环2
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >事件循环2</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <!--
+ * @Author: Jason_Ma
+ * @Date: 2021-02-19 17:28:22
+ * @LastEditors: Jason_Ma
+ * @LastEditTime: 2021-02-19 17:35:07
+ * @FilePath: /gitbook/Chapter4/event_loop_2.md
+-->
+<h1 id="&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;2">[&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;2]</h1>
+<p>&#x5F53;&#x6211;&#x4EEC;&#x8C03;&#x7528;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x65F6;&#xFF0C;&#x5B83;&#x4F1A;&#x88AB;&#x6DFB;&#x52A0;&#x5230;&#x79F0;&#x4E3A;&#x8C03;&#x7528;&#x6808;&#x7684;&#x4E1C;&#x897F;&#x4E2D;&#x3002;&#x8C03;&#x7528;&#x5806;&#x6808;&#x662F;JS&#x5F15;&#x64CE;&#x7684;&#x4E00;&#x90E8;&#x5206;&#xFF0C;&#x8FD9;&#x4E0D;&#x662F;&#x7279;&#x5B9A;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x7684;&#x3002;&#x5B83;&#x662F;&#x4E00;&#x4E2A;&#x5806;&#x6808;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x5B83;&#x662F;&#x5148;&#x8FDB;&#x5148;&#x51FA;&#xFF08;&#x4F8B;&#x5982;&#x4E00;&#x5806;&#x714E;&#x997C;&#xFF09;&#x3002;&#x5F53;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x503C;&#x65F6;&#xFF0C;&#x5B83;&#x4F1A;&#x4ECE;&#x5806;&#x6808;&#x4E2D;&#x5F39;&#x51FA;
+<img src="imgs/gid1.6.gif" alt=""></p>
+<p>&#x8BE5;respond&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;setTimeout&#x51FD;&#x6570;&#x3002;&#x5728;setTimeout&#x7531;Web API&#x63D0;&#x4F9B;&#x7ED9;&#x6211;&#x4EEC;&#xFF1A;&#x5B83;&#x8BA9;&#x6211;&#x4EEC;&#x62D6;&#x5EF6;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x800C;&#x4E0D;&#x4F1A;&#x963B;&#x585E;&#x4E3B;&#x7EBF;&#x7A0B;&#x3002;&#x6211;&#x4EEC;&#x4F20;&#x9012;&#x7ED9;&#x8BE5;setTimeout&#x51FD;&#x6570;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;&#x7BAD;&#x5934;&#x51FD;&#x6570;() =&gt; { return &apos;Hey&apos;}&#x5DF2;&#x6DFB;&#x52A0;&#x5230;Web API&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x8BE5;setTimeout&#x51FD;&#x6570;&#x548C;response&#x51FD;&#x6570;&#x4ECE;&#x5806;&#x6808;&#x4E2D;&#x5F39;&#x51FA;&#xFF0C;&#x5B83;&#x4EEC;&#x90FD;&#x8FD4;&#x56DE;&#x4E86;&#x5B83;&#x4EEC;&#x7684;&#x503C;&#xFF01;
+<img src="imgs/gif2.1.gif" alt=""></p>
+<p>&#x5728;Web API&#x4E2D;&#xFF0C;&#x8BA1;&#x65F6;&#x5668;&#x8FD0;&#x884C;&#x7684;&#x65F6;&#x95F4;&#x4E0E;&#x6211;&#x4EEC;&#x4F20;&#x9012;&#x7ED9;&#x5B83;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;1000ms&#x4E00;&#x6837;&#x957F;&#x3002;&#x56DE;&#x8C03;&#x4E0D;&#x4F1A;&#x7ACB;&#x5373;&#x6DFB;&#x52A0;&#x5230;&#x8C03;&#x7528;&#x5806;&#x6808;&#x4E2D;&#xFF0C;&#x800C;&#x662F;&#x4F1A;&#x4F20;&#x9012;&#x5230;&#x961F;&#x5217;&#x4E2D;&#x3002;
+<img src="imgs/gif3.1.gif" alt="">
+&#x8FD9;&#x53EF;&#x80FD;&#x662F;&#x4E00;&#x4E2A;&#x4EE4;&#x4EBA;&#x56F0;&#x60D1;&#x7684;&#x90E8;&#x5206;&#xFF1A;&#x8FD9;&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;&#x5728;1000&#x6BEB;&#x79D2;&#x540E;&#x5C06;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x6DFB;&#x52A0;&#x5230;&#x8C03;&#x7528;&#x5806;&#x6808;&#x4E2D;&#xFF08;&#x56E0;&#x6B64;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x503C;&#xFF09;&#xFF01;&#x5B83;&#x53EA;&#x662F;&#x5728;1000&#x6BEB;&#x79D2;&#x540E;&#x6DFB;&#x52A0;&#x5230;&#x961F;&#x5217;&#x4E2D;&#x3002;&#x4F46;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x961F;&#x5217;&#xFF0C;&#x8BE5;&#x529F;&#x80FD;&#x5FC5;&#x987B;&#x7B49;&#x5F85;&#x8F6E;&#x5230;&#x5B83;&#xFF01;</p>
+<p>&#x73B0;&#x5728;&#x8FD9;&#x662F;&#x6211;&#x4EEC;&#x5927;&#x5BB6;&#x4E00;&#x76F4;&#x5728;&#x7B49;&#x5F85;&#x7684;&#x90E8;&#x5206;&#x2026;&#x2026;&#x662F;&#x65F6;&#x5019;&#x8BA9;&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;&#x6267;&#x884C;&#x5176;&#x552F;&#x4E00;&#x7684;&#x4EFB;&#x52A1;&#x4E86;&#xFF1A;&#x5C06;&#x961F;&#x5217;&#x4E0E;&#x8C03;&#x7528;&#x5806;&#x6808;&#x8FDE;&#x63A5;&#x8D77;&#x6765;&#xFF01;&#x5982;&#x679C;&#x8C03;&#x7528;&#x5806;&#x6808;&#x4E3A;&#x7A7A;&#xFF0C;&#x90A3;&#x4E48;&#x5982;&#x679C;&#x6240;&#x6709;&#x5148;&#x524D;&#x8C03;&#x7528;&#x7684;&#x51FD;&#x6570;&#x90FD;&#x8FD4;&#x56DE;&#x4E86;&#x5B83;&#x4EEC;&#x7684;&#x503C;&#x5E76;&#x5DF2;&#x4ECE;&#x5806;&#x6808;&#x4E2D;&#x5F39;&#x51FA;&#xFF0C;&#x5219;&#x961F;&#x5217;&#x4E2D;&#x7684;&#x7B2C;&#x4E00;&#x9879;&#x5C06;&#x6DFB;&#x52A0;&#x5230;&#x8C03;&#x7528;&#x5806;&#x6808;&#x4E2D;&#x3002;&#x5728;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6CA1;&#x6709;&#x5176;&#x4ED6;&#x51FD;&#x6570;&#x88AB;&#x8C03;&#x7528;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x5F53;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x6210;&#x4E3A;&#x961F;&#x5217;&#x4E2D;&#x7684;&#x7B2C;&#x4E00;&#x9879;&#x65F6;&#xFF0C;&#x8C03;&#x7528;&#x5806;&#x6808;&#x4E3A;&#x7A7A;&#x3002;
+<img src="imgs/gif4.gif" alt="">
+&#x56DE;&#x8C03;&#x88AB;&#x6DFB;&#x52A0;&#x5230;&#x8C03;&#x7528;&#x5806;&#x6808;&#x4E2D;&#xFF0C;&#x88AB;&#x8C03;&#x7528;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x503C;&#xFF0C;&#x5E76;&#x4ECE;&#x5806;&#x6808;&#x4E2D;&#x5F39;&#x51FA;&#x3002;
+<img src="imgs/gif5.gif" alt=""></p>
+<p>&#x5982;&#x679C;&#x8FD0;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#xFF0C;&#x8BF7;&#x5C1D;&#x8BD5;&#x627E;&#x51FA;&#x767B;&#x5F55;&#x5230;&#x63A7;&#x5236;&#x53F0;&#x7684;&#x5185;&#x5BB9;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> foo = () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;First&quot;</span>);
+<span class="hljs-keyword">const</span> bar = () =&gt; setTimeout(() =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Second&quot;</span>), <span class="hljs-number">500</span>);
+<span class="hljs-keyword">const</span> baz = () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Third&quot;</span>);
+
+bar();
+foo();
+baz();
+</code></pre>
+<p><img src="imgs/gif14.1.gif" alt=""></p>
+<ol>
+<li>&#x6211;&#x4EEC;&#x8C03;&#x7528;bar&#x3002;bar&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;setTimeout&#x51FD;&#x6570;&#x3002;</li>
+<li>&#x6211;&#x4EEC;&#x4F20;&#x9012;&#x7ED9;&#x7684;&#x56DE;&#x8C03;setTimeout&#x88AB;&#x6DFB;&#x52A0;&#x5230;Web API&#xFF0C;&#x8BE5;setTimeout&#x51FD;&#x6570;&#x4E2D;&#xFF0C;&#x5E76;bar&#x4ECE;&#x8C03;&#x7528;&#x5806;&#x6808;&#x4E2D;&#x5F39;&#x51FA;&#x3002;</li>
+<li>&#x8BA1;&#x65F6;&#x5668;&#x8FD0;&#x884C;&#xFF0C;&#x4E0E;&#x6B64;&#x540C;&#x65F6;&#xFF0C;&#x5B83;foo&#x88AB;&#x8C03;&#x7528;&#x5E76;&#x8BB0;&#x5F55;First&#x3002;foo&#x8FD4;&#x56DE;&#xFF08;&#x672A;&#x5B9A;&#x4E49;&#xFF09;&#xFF0C;baz&#x88AB;&#x8C03;&#x7528;&#xFF0C;&#x5E76;&#x5C06;&#x56DE;&#x8C03;&#x6DFB;&#x52A0;&#x5230;&#x961F;&#x5217;&#x4E2D;&#x3002;</li>
+<li>baz&#x65E5;&#x5FD7;Third&#x3002;&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;&#x53D1;&#x73B0;baz&#x8FD4;&#x56DE;&#x540E;&#x8C03;&#x7528;&#x6808;&#x4E3A;&#x7A7A;&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x56DE;&#x8C03;&#x6DFB;&#x52A0;&#x5230;&#x8C03;&#x7528;&#x6808;&#x3002;</li>
+<li>&#x56DE;&#x8C03;&#x65E5;&#x5FD7;Second&#x3002;</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="event_loop_1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 事件循环1">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"事件循环2","level":"1.5.2","depth":2,"previous":{"title":"事件循环1","level":"1.5.1","depth":2,"path":"Chapter4/event_loop_1.md","ref":"Chapter4/event_loop_1.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Chapter4/event_loop_2.md","mtime":"2021-02-19T09:35:10.476Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-02-19T09:35:43.836Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
