@@ -2,7 +2,7 @@
  * @Author: Jason_Ma
  * @Date: 2021-02-19 17:28:22
  * @LastEditors: Jason_Ma
- * @LastEditTime: 2021-02-19 17:35:07
+ * @LastEditTime: 2021-02-19 17:40:27
  * @FilePath: /gitbook/Chapter4/event_loop_2.md
 -->
 [事件循环2]
@@ -39,3 +39,5 @@ baz();
 3. 计时器运行，与此同时，它foo被调用并记录First。foo返回（未定义），baz被调用，并将回调添加到队列中。
 4. baz日志Third。事件循环发现baz返回后调用栈为空，然后将回调添加到调用栈。
 5. 回调日志Second。
+
+> 原文地址：https://dev.to/lydiahallie/javascript-visualized-event-loop-3dif
